@@ -32,11 +32,13 @@ export default Vue.extend({
 <style>
 .images-grid {
   display: grid;
-  grid-template-columns: repeat(7, 1fr);
+  /*grid-template-columns: repeat(7, 1fr);*/
   grid-gap: 0.5rem;
-  padding: 20px 0;
+  padding: 20px;
+  width: 100%;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
 }
-
+/*
 @media (max-width: 2200px) {
   .images-grid {
     grid-template-columns: repeat(6, 1fr);
@@ -71,5 +73,5 @@ export default Vue.extend({
   .images-grid {
     grid-template-columns: repeat(1, 1fr);
   }
-}
+}*/
 </style>

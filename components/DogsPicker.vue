@@ -35,8 +35,8 @@ export default Vue.extend({
 });
 </script>
 
-<style lang="css">
-/*@import './assets/vars';
+<style lang="scss">
+@import './assets/vars';
 
 .dogs-picker {
   border-radius: 0.25rem;
@@ -50,5 +50,5 @@ export default Vue.extend({
   &:hover {
     box-shadow: $base-shadow;
   }
-}*/
+}
 </style>

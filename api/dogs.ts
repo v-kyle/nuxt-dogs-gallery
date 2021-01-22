@@ -1,4 +1,4 @@
-import http from '@/api/http';
+import http from '~/api/http';
 
 interface GetDogsResponse {
   status: string;
@@ -10,7 +10,7 @@ interface BreedsResponse {
   message: Record<string, Array<unknown>>;
 }
 
-async function getDogs(breed: string, num = 40): Promise<Array<string> | null> {
+async function getDogs(breed: string, num = 50): Promise<Array<string> | null> {
   const urlRandom = `breed/${breed}/images/random/${num}`;
   const urlBreed = `breeds/image/random/${num}`;
   const url = breed === 'random' ? urlBreed : urlRandom;

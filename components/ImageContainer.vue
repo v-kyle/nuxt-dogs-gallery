@@ -56,12 +56,13 @@ export default Vue.extend({
 .image-container {
   position: relative;
   border-radius: 0.5rem;
+  width: 300px;
 
   img {
     cursor: pointer;
     border-radius: 0.5rem;
-    width: 300px;
     height: 200px;
+    width: 100%;
 
     &:hover {
       box-shadow: $base-shadow;

@@ -14,9 +14,13 @@ import RootStore from '~/store/modules';
 export default Vue.extend({
   components: { Header },
 
-  async mounted(): Promise<void> {
+  async fetch(): Promise<void> {
     const store: RootStore = useStore(this.$store);
     await store.breeds.loadAllBreeds();
+  },
+
+  mounted(): void {
+    const store: RootStore = useStore(this.$store);
     store.favorites.loadSavedFavorites();
   },
 });

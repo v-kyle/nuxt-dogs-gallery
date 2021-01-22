@@ -15,6 +15,10 @@ export default Vue.extend({
 
   components: { ImagesGrid },
 
+  async fetch(): Promise<void> {
+    await this.loadDogs();
+  },
+
   data() {
     return {
       dogs: [] as Array<string>,
@@ -38,9 +42,8 @@ export default Vue.extend({
     },
   },
 
-  async mounted() {
+  mounted() {
     window.addEventListener('scroll', this.debouncedScrollHandler());
-    await this.loadDogs();
   },
 
   beforeDestroy() {

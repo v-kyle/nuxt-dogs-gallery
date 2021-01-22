@@ -1,44 +1,73 @@
 <template>
-  <div class="container">
-    <h1 class="title">nuxt-dogs-gallery</h1>
-  </div>
+  <ImagesGrid :items="dogs" :general-alt="'dog'" />
 </template>
 
 <script lang="ts">
 import Vue from 'vue';
+import { debounce } from 'lodash';
+import { useStore } from 'vuex-simple';
+import { getDogs } from '~/api/dogs';
+import ImagesGrid from '~/components/ImagesGrid.vue';
+import RootStore from '~/store/modules';
 
-export default Vue.extend({});
+export default Vue.extend({
+  name: 'Home',
+
+  components: { ImagesGrid },
+
+  data() {
+    return {
+      dogs: [] as Array<string>,
+    };
+  },
+
+  computed: {
+    selectedBreed(): string {
+      const store: RootStore = useStore(this.$store);
+      return store.breeds.selectedBreed;
+    },
+  },
+
+  watch: {
+    async selectedBreed(value) {
+      const data = await getDogs(value);
+      if (data) {
+        this.dogs = [];
+        this.dogs.push(...data);
+      }
+    },
+  },
+
+  async mounted() {
+    window.addEventListener('scroll', this.debouncedScrollHandler());
+    await this.loadDogs();
+  },
+
+  beforeDestroy() {
+    window.removeEventListener('scroll', this.debouncedScrollHandler());
+  },
+
+  methods: {
+    async loadDogs() {
+      const data = await getDogs(this.selectedBreed);
+      if (data) {
+        this.dogs.push(...data);
+      }
+    },
+
+    async scrollHandler() {
+      const bottomOfWindow =
+        document.documentElement.scrollTop + window.innerHeight >
+        0.95 * document.documentElement.offsetHeight;
+
+      if (bottomOfWindow) {
+        await this.loadDogs();
+      }
+    },
+
+    debouncedScrollHandler() {
+      return debounce(this.scrollHandler, 500);
+    },
+  },
+});
 </script>
-
-<style>
-.container {
-  margin: 0 auto;
-  min-height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  /*text-align: center;*/
-}
-
-.title {
-  font-family: 'Quicksand', 'Source Sans Pro', -apple-system, BlinkMacSystemFont,
-    'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-  display: block;
-  font-weight: 300;
-  font-size: 100px;
-  color: #35495e;
-  letter-spacing: 1px;
-}
-
-.subtitle {
-  font-weight: 300;
-  font-size: 42px;
-  color: #526488;
-  word-spacing: 5px;
-  padding-bottom: 15px;
-}
-
-.links {
-  padding-top: 15px;
-}
-</style>

@@ -7,8 +7,9 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import { useStore } from 'vuex-simple';
+import { useModule, useStore } from 'vuex-simple';
 import RootStore from '~/store/modules';
+import { useRootStore } from '~/utils/rootStore';
 
 export default Vue.extend({
   name: 'ImageContainer',
@@ -26,24 +27,25 @@ export default Vue.extend({
   },
 
   computed: {
+    rootStore(): RootStore {
+      return useRootStore(this.$store);
+    },
+
     favorites(): Array<string> {
-      const store: RootStore = useStore(this.$store);
-      return store.favorites.favorites;
+      return this.rootStore.favorites.favorites;
     },
 
     isFavorite(): boolean {
-      const store: RootStore = useStore(this.$store);
-      return store.favorites.favorites.includes(this.src);
+      return this.rootStore.favorites.favorites.includes(this.src);
     },
   },
 
   methods: {
     clickHandler() {
-      const store: RootStore = useStore(this.$store);
       if (this.isFavorite) {
-        store.favorites.removeFromFavorites(this.src);
+        this.rootStore.favorites.removeFromFavorites(this.src);
       } else {
-        store.favorites.addToFavorite(this.src);
+        this.rootStore.favorites.addToFavorite(this.src);
       }
     },
   },

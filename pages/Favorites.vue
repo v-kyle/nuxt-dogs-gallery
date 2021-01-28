@@ -4,9 +4,9 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import { useStore } from 'vuex-simple';
 import ImagesGrid from '~/components/ImagesGrid.vue';
 import RootStore from '~/store/modules';
+import { useRootStore } from '~/utils/rootStore';
 
 export default Vue.extend({
   name: 'Favorites',
@@ -14,9 +14,12 @@ export default Vue.extend({
   components: { ImagesGrid },
 
   computed: {
+    rootStore(): RootStore {
+      return useRootStore(this.$store);
+    },
+
     dogs(): Array<string> {
-      const store: RootStore = useStore(this.$store);
-      return store.favorites.favorites;
+      return this.rootStore.favorites.favorites;
     },
   },
 });

@@ -7,8 +7,8 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import { useStore } from 'vuex-simple';
 import RootStore from '~/store/modules';
+import { useRootStore } from '~/utils/rootStore';
 
 export default Vue.extend({
   name: 'DogsPicker',
@@ -20,16 +20,18 @@ export default Vue.extend({
   },
 
   computed: {
+    rootStore(): RootStore {
+      return useRootStore(this.$store);
+    },
+
     breeds(): Array<string> {
-      const store: RootStore = useStore(this.$store);
-      return store.breeds.breeds;
+      return this.rootStore.breeds.breeds;
     },
   },
 
   methods: {
     updateBreed() {
-      const store: RootStore = useStore(this.$store);
-      store.breeds.setBreed(this.selectedBreed);
+      this.rootStore.breeds.setBreed(this.selectedBreed);
     },
   },
 });

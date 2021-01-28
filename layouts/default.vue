@@ -7,21 +7,25 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import { useStore } from 'vuex-simple';
 import Header from '~/components/Header.vue';
 import RootStore from '~/store/modules';
+import { useRootStore } from '~/utils/rootStore';
 
 export default Vue.extend({
   components: { Header },
 
   async fetch(): Promise<void> {
-    const store: RootStore = useStore(this.$store);
-    await store.breeds.loadAllBreeds();
+    await this.rootStore.breeds.loadAllBreeds();
+  },
+
+  computed: {
+    rootStore(): RootStore {
+      return useRootStore(this.$store);
+    },
   },
 
   mounted(): void {
-    const store: RootStore = useStore(this.$store);
-    store.favorites.loadSavedFavorites();
+    this.rootStore.favorites.loadSavedFavorites();
   },
 });
 </script>

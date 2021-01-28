@@ -5,9 +5,9 @@
 <script lang="ts">
 import Vue from 'vue';
 import { debounce } from 'lodash';
-import { useStore } from 'vuex-simple';
 import { getDogs } from '~/api/dogs';
 import ImagesGrid from '~/components/ImagesGrid.vue';
+import { useRootStore } from '~/utils/rootStore';
 import RootStore from '~/store/modules';
 
 export default Vue.extend({
@@ -26,9 +26,12 @@ export default Vue.extend({
   },
 
   computed: {
+    rootStore(): RootStore {
+      return useRootStore(this.$store);
+    },
+
     selectedBreed(): string {
-      const store: RootStore = useStore(this.$store);
-      return store.breeds.selectedBreed;
+      return this.rootStore.breeds.selectedBreed;
     },
   },
 
